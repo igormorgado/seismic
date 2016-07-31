@@ -1,2 +1,2 @@
-A bunch of nonsense seismic code to be organized.
+A bunch of nonsense seismic code to be organized and completely rewritten
 
