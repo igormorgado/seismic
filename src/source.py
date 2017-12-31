@@ -76,7 +76,7 @@ def gauss_timestep(n, dt, period=None, frequency=None):
         raise ValueError("Period or Frequency needs to be greater than 0")
 
 
-def gauss(t, **kwargs):
+def gauss(t, central_frequency=None, cut_frequency=None):
     """A gaussian seismic source.
 
     Params:
@@ -90,15 +90,12 @@ def gauss(t, **kwargs):
         (nparray): Values of Gausian source in given time.
     """
     # Sanity check {{{
-    if 'cut_frequency' in kwargs:
-        cut_frequency = kwargs['cut_frequency']
+    if 'cut_frequency' is not None:
         if cut_frequency > 0:
             central_frequency = gauss_central_frequency(cut_frequency)
         else:
             raise ValueError("Cut Frequency must be positive")
-    elif 'central_frequency' in kwargs:
-        central_frequency = kwargs['central_frequency']
-        if central_frequency <= 0:
+    elif 'central_frequency' is not None and central_frequency <= 0:
             raise ValueError("Central Frequency must be positive")
     else:
         raise ValueError("Cut Frequency or Central Frequency must be given")
