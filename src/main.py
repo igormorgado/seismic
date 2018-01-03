@@ -47,13 +47,12 @@ def main():
 
     # Define the sources
     sources = [
-        Source(int(nx/3), int(nz*0.05), source.gauss, {'cut_frequency':60}),
+        # Source(int(nx/3), int(nz*0.05), source.gauss, {'cut_frequency':60}),
         Source(int(nx/2), int(nz*0.05), source.gauss, {'cut_frequency':60}),
-        Source(int(nx*2/3), int(nz*0.05), source.gauss, {'cut_frequency':60}),
+        # Source(int(nx*2/3), int(nz*0.05), source.gauss, {'cut_frequency':60}),
     ]
 
     sismogram = []
-    wavefield = []
 
     # Iterate over time from 0 to 'ttime'  with 'dt' steplength
     for step, t in enumerate(np.arange(0, ttime, dt)):
@@ -74,7 +73,8 @@ def main():
         # Adding some images for animation
         if step % (nt/frames) == 0:
             #imaging.savefig(P[2], step, t, dt)
-            wavefield.append(P[2])
+            fname="-{:04d}".format(step)
+            np.savez_compressed("data/wavefield-" + fname, P[2])
             sismogram.append(P[2,0])
             #imaging.show_wave(P[2], step, t, dt)
             print("Step {}/{}".format(step, nt))
@@ -82,8 +82,7 @@ def main():
         # Move time steps
         P[0], P[1] = P[1], P[2]
 
-    np.save("sismogram", sismogram)
-    np.save("wavefield", wavefield)
+    np.savez_compressed("data/sismogram", sismogram)
 
 if __name__ == "__main__":
     main()
