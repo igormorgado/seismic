@@ -1,0 +1,11 @@
+h = min( dx, dz, dy)
+
+h <= 0.5 * ( V_min / f_corte )
+
+dt <= 0.5 * (h / V_max)
+
+
+dt
+
+p = (np.pi * freq * X)**2 ; f = (1 - 2 * p) * np.exp(-p); return f
+

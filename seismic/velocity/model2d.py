@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-class Model2D(np.array):
+class Model2D(object):
     """Returns a 2D velocity model"""
 
     def __init__(self, nx, nz, dx=1, dz=1):
@@ -21,11 +21,12 @@ class Model2D(np.array):
         self.dz = dz
 
         # Create the empty velocity model when instantiating
-        self.V = np.zeros((self.nx, self.nz))
+        self.field = np.zeros((self.nx, self.nz))
         self.model = "empty"
+        self.extra = "None"
 
     def __repr__(self):
-        msgstr = "{}(model={}, nx={}, nz={}, dx={}, dz={}, {})"
+        msgstr = "{}(model='{}', nx={}, nz={}, dx={}, dz={}, {})"
         msgfmt = msgstr.format(
                 self.__class__.__name__,
                 self.model,
@@ -37,7 +38,7 @@ class Model2D(np.array):
         return msgfmt
 
 
-    def parallel_planes(self, velocities=(1500, 1500, 2500, 3000)):
+    def parallel_planes(self, velocities=(1500, 1700, 2000, 3000)):
         """Returns a parallel plane velocity model. By default 3 slices are
         created: water, sedment, salt.
 
@@ -49,15 +50,16 @@ class Model2D(np.array):
         """
         n = len(velocities)
 
-        self.extra="velocities=({})".format(", ".join(velocities))
+        self.model = "parallel"
+        self.extra = "velocities=[{}]".format(", ".join(str(v) for v in velocities))
 
         for idx, vel in enumerate(velocities):
             beg = int((self.nz/n)*idx)
             end = int((self.nz/n)*(idx+1))
-            self.V[:, beg:end] = vel
+            self.field[:, beg:end] = vel
 
 
-    def semi_circle(self, velocities=(1500, 2500, 3000)):
+    def semi_circle(self, velocities=(1500, 1700, 2000, 3000)):
         """Returns a velocity model with a dome in last velocity.
 
         Params:
@@ -68,16 +70,18 @@ class Model2D(np.array):
         """
         n = len(velocities)
         height = self.nz / n
-        self.extra="velocities=({})".format(", ".join(velocities))
+
+        self.model = "semicircle"
+        self.extra = "velocities=[{}]".format(", ".join(str(v) for v in velocities))
 
         vel = None
         for idx, vel in enumerate(velocities[:-1]):
             beg = int(height*idx)
             end = int(height*(idx+1))
-            self.V[:, beg:end] = vel
+            self.field[:, beg:end] = vel
 
         # Fill the last slice with the same velocity as the previous
-        self.V[:, end:] = vel
+        self.field[:, end:] = vel
 
         # Now we will create the last slice
 
@@ -90,10 +94,10 @@ class Model2D(np.array):
         vel = velocities[-1]
 
         mask = -np.sqrt((radius**2) - ((x-border)**2)) + self.nz < z
-        self.V[mask] = vel
+        self.field[mask] = vel
 
 
-    def double_slice(self, velocities=(1500, 2500, 3000)):
+    def double_slice(self, velocities=(1500, 1700, 2000, 2250, 3000)):
         """Returns a velocity model with a dome in last velocity.
 
         Params:
@@ -104,28 +108,30 @@ class Model2D(np.array):
         """
         n = len(velocities)
         height = self.nz / n
-        self.extra="velocities=({})".format(", ".join(velocities))
+
+        self.model = "doubleslice"
+        self.extra = "velocities=[{}]".format(", ".join(str(v) for v in velocities))
 
         vel = None
         idx = None
         for idx, vel in enumerate(velocities[:-2]):
             beg = int(height*idx)
             end = int(height*(idx+1))
-            self.V[:, beg:end] = vel
+            self.field[:, beg:end] = vel
 
         # Fill the last two slice with the same velocity as the previous
-        self.V[:, end:] = vel
+        self.field[:, end:] = vel
 
         # Now we will create the double slice
 
         # Building the anticline
-        radius = nx * .5
+        radius = self.nx * .5
         x, z = np.ogrid[0:self.nx, 0:self.nz]
 
         mask_up = np.sqrt((radius**2) - (x**2)) + (idx+1)*height < z
         mask_down = -np.sqrt((radius**2) - ((x-self.nx)**2)) + (idx+1)*height < z
         mask = mask_up + mask_down
-        self.V[mask] = velocities[-1]
+        self.field[mask] = velocities[-1]
 
 
     def gom_velocity(self):
@@ -160,7 +166,8 @@ class Model2D(np.array):
 
         z = np.array([i * self.dz for i in range(self.nz)])
         gomvel = gom_profile(z)
-        self.V[:] = gomvel
+        self.model = "gom"
+        self.field[:] = gomvel
 
 
     def plot(self, title=None, cmap='plasma', show=True):
@@ -174,16 +181,21 @@ class Model2D(np.array):
             figure: A matplotlib figure if show=False
         """
         cmap = plt.get_cmap(cmap)
+        xmax = self.field.shape[0] * self.dx
+        zmax = self.field.shape[1] * self.dz
+
         fig = plt.figure()
-        xmax = velocity.shape[0] * self.dx
-        zmax = velocity.shape[1] * self.dz
-        plt.imshow(self.V.transpose(), origin='upper', cmap=cmap, extent=[0, xmax, zmax, 0])
-        if title is not None:
-            plt.title(title)
+        plt.imshow(self.field.transpose(), origin='upper', cmap=cmap, extent=[0, xmax, zmax, 0])
+
+        if title is None:
+            titlestr="Velocity field {}: nx={}, nz={}, dx={}, dz={}"
+            title=titlestr.format(self.model, self.nx, self.nz, self.dx, self.dz)
+
+        plt.title(title)
         plt.ylabel("Depth")
         plt.colorbar()
 
         if show:
-            fig.show()
+            plt.show()
         else:
             return fig

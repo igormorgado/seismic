@@ -1,18 +1,18 @@
 """Setup for Seismic"""
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
+#packages=['seismic'],
 
 setup(
     name='seismic',
     version='0.0.1',
-    packages=['seismic'],
-    package_dir={'seismic': 'src'},
-    install_requires=['numpy'],
+    packages = find_packages(),
+    install_requires=['numpy', 'zarr'],
     description='Seismic algorithms',
     url='http://github.com/igormorgado/seismic',
     license='GNU/GPLv2',
-    python_requires='>=3.4, <4',
+    python_requires='>=3.5, <4',
     author='Igor Morgado',
     author_email='morgado.igor@gmail.com',
     keywords=['seismic', 'numpy', 'jupyter'],

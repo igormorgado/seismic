@@ -1,0 +1,22 @@
+src package
+===========
+
+Submodules
+----------
+
+silva2015 module
+---------------------
+
+.. automodule:: silva2015
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: silva2015
+    :members:
+    :undoc-members:
+    :show-inheritance:

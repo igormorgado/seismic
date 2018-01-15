@@ -1,0 +1,178 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt_BR">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Seismic package &#8212; documentação Seismic 1</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+    <link rel="prev" title="Seismic package" href="source.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="seismic-package">
+<h1>Seismic package<a class="headerlink" href="#seismic-package" title="Link permanente para este título">¶</a></h1>
+<div class="section" id="module-stability">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-stability" title="Link permanente para este título">¶</a></h2>
+<p>This module will evaluate model stability</p>
+<dl class="function">
+<dt id="stability.dispersion">
+<code class="descclassname">stability.</code><code class="descname">dispersion</code><span class="sig-paren">(</span><em>V</em>, <em>dx</em>, <em>dy</em>, <em>dz</em>, <em>f</em>, <em>k=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stability.html#dispersion"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#stability.dispersion" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Evalutate the model dispersion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>V</strong> (<em>nparray</em>) – is the velocity model</li>
+<li><strong>dx</strong> (<em>float</em>) – is the x interval</li>
+<li><strong>dy</strong> (<em>float</em>) – is the y interval</li>
+<li><strong>dz</strong> (<em>float</em>) – is the z interval</li>
+<li><strong>f</strong> (<em>float</em>) – is the cutdown frequency</li>
+<li><strong>k</strong> (<em>float</em>) – maximum number of samples in a wavelength.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">If the model is stable</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="stability.stability">
+<code class="descclassname">stability.</code><code class="descname">stability</code><span class="sig-paren">(</span><em>V</em>, <em>dx</em>, <em>dy</em>, <em>dz</em>, <em>dt</em>, <em>mu=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stability.html#stability"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#stability.stability" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Evalutate the model stability.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>V</strong> (<em>nparray</em>) – is the velocity model</li>
+<li><strong>dx</strong> (<em>float</em>) – is the x interval</li>
+<li><strong>dy</strong> (<em>float</em>) – is the y interval</li>
+<li><strong>dz</strong> (<em>float</em>) – is the z interval</li>
+<li><strong>dt</strong> (<em>float</em>) – is the t interval (timestep)</li>
+<li><strong>mu</strong> (<em>float</em>) – is stability constant</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">If the model is stable</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Seismic</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navegação</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">CHANGELOG</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Seismic</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="base.html">Seismic package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wave.html">Seismic package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source.html">Seismic package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Seismic package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">Seismic</a><ul>
+      <li>Previous: <a href="source.html" title="capítulo anterior">Seismic package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Busca rápida</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Ir" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Igor Morgado.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/source/stability.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,554 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt_BR">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Seismic package &#8212; documentação Seismic 1</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+    <link rel="prev" title="Seismic" href="modules.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="seismic-package">
+<h1>Seismic package<a class="headerlink" href="#seismic-package" title="Link permanente para este título">¶</a></h1>
+<div class="section" id="module-base">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-base" title="Link permanente para este título">¶</a></h2>
+<p>This code implements all algorithms described on
+SILVA2015 - Introducao ao metodo sismico: Modelagem Computacional</p>
+<p>Serao utilizadas a principio as mesmas variaves e nomeclaturas usadas
+no artigo</p>
+<dl class="function">
+<dt id="base.Vp">
+<code class="descclassname">base.</code><code class="descname">Vp</code><span class="sig-paren">(</span><em>density=None</em>, <em>young=None</em>, <em>poisson=None</em>, <em>shear=None</em>, <em>deformation=None</em>, <em>distance=None</em>, <em>time=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/base.html#Vp"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#base.Vp" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna a velocidade da onda compressional (P) pelas propriedades dadas.</p>
+<p>Para computacao, deve se entrar uma das seguintes combinacoes de
+parametros:
+* density, young, poisson;
+* density, shear, deformation;
+* distance, time</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>density</strong> (<em>float</em>) – Densidade do material (rho).</li>
+<li><strong>young</strong> (<em>float</em>) – Coeficiente de Young (E).</li>
+<li><strong>poisson</strong> (<em>float</em>) – Coeficiente de poisson (sigma)</li>
+<li><strong>shear</strong> (<em>float</em>) – Coeficiente compressional (mu)</li>
+<li><strong>deformation</strong> (<em>float</em>) – Deformacao do material (k) (Bulk’s)</li>
+<li><strong>distance</strong> (<em>float</em>) – Distancia em metros (x)</li>
+<li><strong>time</strong> (<em>float</em>) – tempo percorrido (t).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">Velocidade da onda P.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="base.Vs">
+<code class="descclassname">base.</code><code class="descname">Vs</code><span class="sig-paren">(</span><em>density</em>, <em>shear=None</em>, <em>young=None</em>, <em>poisson=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/base.html#Vs"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#base.Vs" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Returns shear velocity based on physical coefficients.</p>
+<p>You should supply one of the two parameter combinations:</p>
+<ul class="simple">
+<li>density and shear;</li>
+<li>density, Young and Poisson coefficient</li>
+</ul>
+<p>This function verifies the values, therefore is slower, if you need faster
+function, call directly:</p>
+<ul class="simple">
+<li>velocity_s_by_shear</li>
+<li>velocity_s_by_young</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>density</strong> (<em>float</em>) – Density (non negative) ( <img class="math" src="../_images/math/9a51ab9a0b521705e1e8762fac6bdd6f11771758.png" alt="\rho"/> ).</li>
+<li><strong>shear</strong> (<em>float</em>) – Shear (non negative) ( <img class="math" src="../_images/math/d79e8a2c7ce54906c2b25549da38bdbe02cf40d6.png" alt="\mu"/> ).</li>
+<li><strong>young</strong> (<em>float</em>) – Young coefficient (E).</li>
+<li><strong>poisson</strong> (<em>float</em>) – Poisson coefficient. <img class="math" src="../_images/math/86254cba226141dbc3ea1b543b81d884767eb3b6.png" alt="0 &lt; \sigma &lt; 1/2"/> .</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">Shear velocity</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="base.acoustic_impedance">
+<code class="descclassname">base.</code><code class="descname">acoustic_impedance</code><span class="sig-paren">(</span><em>density</em>, <em>velocity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/base.html#acoustic_impedance"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#base.acoustic_impedance" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Returns acoustic impedance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>density</strong> (<em>float</em>) – Density (rho).</li>
+<li><strong>velocity</strong> (<em>float</em>) – Wave velocity (V)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">Acoustic impedance</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="base.frequency">
+<code class="descclassname">base.</code><code class="descname">frequency</code><span class="sig-paren">(</span><em>initial_time</em>, <em>end_time</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/base.html#frequency"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#base.frequency" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna a frequencia baseado no intervalo de tempo.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>t0</strong> (<em>float</em>) – Inicio do intervalo.</li>
+<li><strong>t1</strong> (<em>float</em>) – Fim do intervalo.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">Frequencia.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="base.period">
+<code class="descclassname">base.</code><code class="descname">period</code><span class="sig-paren">(</span><em>initial_time</em>, <em>final_time</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/base.html#period"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#base.period" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna o periodo do intervalo.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>initial_time</strong> (<em>float</em>) – Inicio do intervalo.</li>
+<li><strong>final_time</strong> (<em>float</em>) – Fim do intervalo.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">Tamanho do intervalo.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="base.reflection_coefficient">
+<code class="descclassname">base.</code><code class="descname">reflection_coefficient</code><span class="sig-paren">(</span><em>z1</em>, <em>z2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/base.html#reflection_coefficient"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#base.reflection_coefficient" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Returns the reflection coefficient.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>z1</strong> (<em>float</em>) – Acoustic impedance of upper layer.</li>
+<li><strong>z2</strong> (<em>float</em>) – Acoustic impedance of lower layer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">Reflection coefficient.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="base.velocity_p_by_distance">
+<code class="descclassname">base.</code><code class="descname">velocity_p_by_distance</code><span class="sig-paren">(</span><em>x</em>, <em>t</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/base.html#velocity_p_by_distance"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#base.velocity_p_by_distance" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna a velocidade da onda compressional dados distancia e tempo</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>float</em>) – Distancia percorrida.</li>
+<li><strong>t</strong> (<em>float</em>) – Tempo percorrido.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">velocidade compressional</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="base.velocity_p_by_shear">
+<code class="descclassname">base.</code><code class="descname">velocity_p_by_shear</code><span class="sig-paren">(</span><em>rho</em>, <em>mu</em>, <em>k</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/base.html#velocity_p_by_shear"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#base.velocity_p_by_shear" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna a velocidade da onda P (compressional) pelas propriedades da
+rocha.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>rho</strong> (<em>float</em>) – Densidade do material.</li>
+<li><strong>mu</strong> (<em>float</em>) – Modulo de cisalhamento (mede deformacao sem mudanca de</li>
+<li><strong>volume</strong><strong>)</strong><strong></strong> – </li>
+<li><strong>k</strong> (<em>float</em>) – Modulo da deformacao volumetrica (Bulk).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">velocidade compressional.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="base.velocity_p_by_young">
+<code class="descclassname">base.</code><code class="descname">velocity_p_by_young</code><span class="sig-paren">(</span><em>rho</em>, <em>E</em>, <em>sigma</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/base.html#velocity_p_by_young"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#base.velocity_p_by_young" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna a velocidade da onda P (compressional) pelas propriedades da
+rocha.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>rho</strong> (<em>float</em>) – densidade do material.</li>
+<li><strong>E</strong> (<em>float</em>) – Modulo de Young (proporcionalidade entre a tensao e a</li>
+<li><strong>deformacao</strong><strong>)</strong><strong></strong> – </li>
+<li><strong>sigma</strong> (<em>float</em>) – Coeficiente de Poisson (razao da contracao transversal</li>
+<li><strong>extensao longitudinal.</strong> (<em>e</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">Velocidade compressional.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="base.velocity_ratio">
+<code class="descclassname">base.</code><code class="descname">velocity_ratio</code><span class="sig-paren">(</span><em>deformation=None</em>, <em>shear=None</em>, <em>poisson=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/base.html#velocity_ratio"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#base.velocity_ratio" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Returns velocity ratio P/S</p>
+<p>The function requires “deformation and shear”  OR poisson coefficients. If
+all three are supplied Poisson is ignored.</p>
+<p>This function is slower since it does verifications but safer.  If you
+want to call without value verification use:
+* velocity_ratio_by_deformation
+* velocity_ratio_by_poisson</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>deformation</strong> (<em>float</em>) – Deformation factor (k), must be positive.</li>
+<li><strong>shear</strong> (<em>float</em>) – Shear factor (mu), must be positive.</li>
+<li><strong>poisson</strong> (<em>float</em>) – Poisson coeficient (sigma),  0 &lt; sigma &lt; 1/2.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">Velocity ratio P/S. Always a number bigger than 1.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="base.velocity_ratio_by_deformation">
+<code class="descclassname">base.</code><code class="descname">velocity_ratio_by_deformation</code><span class="sig-paren">(</span><em>k</em>, <em>mu</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/base.html#velocity_ratio_by_deformation"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#base.velocity_ratio_by_deformation" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna a razao entre a velocidade P e S.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>deformation</strong> (<em>float</em>) – Coeficiente de deformacao (de Bulk)</li>
+<li><strong>shear</strong> (<em>float</em>) – Coeficiente de cisalhamento</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">Razao da velocidade Vp/Vs.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="base.velocity_ratio_by_poisson">
+<code class="descclassname">base.</code><code class="descname">velocity_ratio_by_poisson</code><span class="sig-paren">(</span><em>sigma</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/base.html#velocity_ratio_by_poisson"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#base.velocity_ratio_by_poisson" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna a razao entre a Vp e Vs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><strong>poisson</strong> (<em>float</em>) – Coeficiente de poisson</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body">Razao da velocidade Vp/Vs</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="base.velocity_s_by_shear">
+<code class="descclassname">base.</code><code class="descname">velocity_s_by_shear</code><span class="sig-paren">(</span><em>rho</em>, <em>mu</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/base.html#velocity_s_by_shear"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#base.velocity_s_by_shear" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna a velocidade da onda S (cisalhante) dados mu e rho.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>rho</strong> (<em>float</em>) – Coeficiente de Cisalhamento</li>
+<li><strong>mu</strong> (<em>float</em>) – Coeficiente de densidade.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">Velocidade cisalhante</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="base.velocity_s_by_young">
+<code class="descclassname">base.</code><code class="descname">velocity_s_by_young</code><span class="sig-paren">(</span><em>rho</em>, <em>E</em>, <em>sigma</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/base.html#velocity_s_by_young"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#base.velocity_s_by_young" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna a velocidade da onda S dados sigma e rho.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>rho</strong> (<em>float</em>) – Coeficiente de densidade (rho)</li>
+<li><strong>E</strong> (<em>float</em>) – Young’s soefficient</li>
+<li><strong>sigma</strong> (<em>float</em>) – Coeficiente de Poisson (sigma)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">Velocidade cisalhante</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="base.wave_velocity">
+<code class="descclassname">base.</code><code class="descname">wave_velocity</code><span class="sig-paren">(</span><em>initial_position</em>, <em>initial_time</em>, <em>final_position</em>, <em>final_time</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/base.html#wave_velocity"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#base.wave_velocity" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna a velocidade da onda como a razao entre duas cristas de onda.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>initial_position</strong> (<em>float</em>) – Inicio do Intervalo.</li>
+<li><strong>initial_time</strong> (<em>float</em>) – Inicio do intervalo.</li>
+<li><strong>final_position</strong> (<em>float</em>) – Final do intervalo.</li>
+<li><strong>final_time</strong> (<em>float</em>) – Fim do intervalo.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">Velocidade da onda</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="base.wavelength">
+<code class="descclassname">base.</code><code class="descname">wavelength</code><span class="sig-paren">(</span><em>initial_position</em>, <em>final_position</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/base.html#wavelength"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#base.wavelength" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna ‘lambda’ (comprimento de onda), dados dois picos r1, r0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parâmetros:</th><td class="field-body"><ul class="first simple">
+<li><strong>initial_position</strong> (<em>float</em>) – Inicio do Intervalo.</li>
+<li><strong>final_position</strong> (<em>float</em>) – Final do intervalo.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Retorna:</th><td class="field-body"><p class="first">Comprimento de onda (lambda)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Tipo de retorno:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Seismic</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navegação</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">CHANGELOG</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Seismic</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Seismic package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">Seismic</a><ul>
+      <li>Previous: <a href="modules.html" title="capítulo anterior">Seismic</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Busca rápida</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Ir" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Igor Morgado.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/source/base.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

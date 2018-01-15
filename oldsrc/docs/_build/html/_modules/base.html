@@ -1,0 +1,397 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt_BR">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>base &#8212; documentação Seismic 1</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Código fonte para base</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This code implements all algorithms described on</span>
+<span class="sd">SILVA2015 - Introducao ao metodo sismico: Modelagem Computacional</span>
+
+<span class="sd">Serao utilizadas a principio as mesmas variaves e nomeclaturas usadas</span>
+<span class="sd">no artigo</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># pylint: disable=locally-disabled, invalid-name</span>
+
+<div class="viewcode-block" id="wavelength"><a class="viewcode-back" href="../source/base.html#base.wavelength">[documentos]</a><span class="k">def</span> <span class="nf">wavelength</span><span class="p">(</span><span class="n">initial_position</span><span class="p">,</span> <span class="n">final_position</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retorna &#39;lambda&#39; (comprimento de onda), dados dois picos r1, r0.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        initial_position (float): Inicio do Intervalo.</span>
+<span class="sd">        final_position (float): Final do intervalo.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Comprimento de onda (lambda)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">final_position</span> <span class="o">-</span> <span class="n">initial_position</span></div>
+
+
+<div class="viewcode-block" id="period"><a class="viewcode-back" href="../source/base.html#base.period">[documentos]</a><span class="k">def</span> <span class="nf">period</span><span class="p">(</span><span class="n">initial_time</span><span class="p">,</span> <span class="n">final_time</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retorna o periodo do intervalo.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        initial_time (float): Inicio do intervalo.</span>
+<span class="sd">        final_time (float): Fim do intervalo.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Tamanho do intervalo.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">initial_time</span> <span class="o">-</span> <span class="n">final_time</span></div>
+
+
+<div class="viewcode-block" id="wave_velocity"><a class="viewcode-back" href="../source/base.html#base.wave_velocity">[documentos]</a><span class="k">def</span> <span class="nf">wave_velocity</span><span class="p">(</span><span class="n">initial_position</span><span class="p">,</span> <span class="n">initial_time</span><span class="p">,</span> <span class="n">final_position</span><span class="p">,</span> <span class="n">final_time</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retorna a velocidade da onda como a razao entre duas cristas de onda.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        initial_position (float): Inicio do Intervalo.</span>
+<span class="sd">        initial_time (float): Inicio do intervalo.</span>
+<span class="sd">        final_position (float): Final do intervalo.</span>
+<span class="sd">        final_time (float): Fim do intervalo.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Velocidade da onda</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">wavelength</span><span class="p">(</span><span class="n">initial_position</span><span class="p">,</span> <span class="n">final_position</span><span class="p">)</span> <span class="o">/</span>
+            <span class="n">period</span><span class="p">(</span><span class="n">initial_time</span><span class="p">,</span> <span class="n">final_time</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="frequency"><a class="viewcode-back" href="../source/base.html#base.frequency">[documentos]</a><span class="k">def</span> <span class="nf">frequency</span><span class="p">(</span><span class="n">initial_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retorna a frequencia baseado no intervalo de tempo.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        t0 (float): Inicio do intervalo.</span>
+<span class="sd">        t1 (float): Fim do intervalo.</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">        float: Frequencia.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="n">period</span><span class="p">(</span><span class="n">initial_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="velocity_p_by_distance"><a class="viewcode-back" href="../source/base.html#base.velocity_p_by_distance">[documentos]</a><span class="k">def</span> <span class="nf">velocity_p_by_distance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retorna a velocidade da onda compressional dados distancia e tempo</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x (float): Distancia percorrida.</span>
+<span class="sd">        t (float): Tempo percorrido.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: velocidade compressional</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">/</span><span class="n">t</span></div>
+
+
+<div class="viewcode-block" id="velocity_p_by_shear"><a class="viewcode-back" href="../source/base.html#base.velocity_p_by_shear">[documentos]</a><span class="k">def</span> <span class="nf">velocity_p_by_shear</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retorna a velocidade da onda P (compressional) pelas propriedades da</span>
+<span class="sd">    rocha.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        rho (float): Densidade do material.</span>
+<span class="sd">        mu (float): Modulo de cisalhamento (mede deformacao sem mudanca de</span>
+<span class="sd">        volume).</span>
+<span class="sd">        k (float): Modulo da deformacao volumetrica (Bulk).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: velocidade compressional.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">k</span> <span class="o">+</span> <span class="p">(</span><span class="mi">4</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">rho</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="velocity_p_by_young"><a class="viewcode-back" href="../source/base.html#base.velocity_p_by_young">[documentos]</a><span class="k">def</span> <span class="nf">velocity_p_by_young</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retorna a velocidade da onda P (compressional) pelas propriedades da</span>
+<span class="sd">    rocha.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        rho (float): densidade do material.</span>
+<span class="sd">        E (float): Modulo de Young (proporcionalidade entre a tensao e a</span>
+<span class="sd">        deformacao).</span>
+<span class="sd">        sigma (float): Coeficiente de Poisson (razao da contracao transversal</span>
+<span class="sd">        e extensao longitudinal.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Velocidade compressional.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">E</span><span class="o">/</span><span class="n">rho</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">sigma</span><span class="p">)</span> <span class="o">/</span> <span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">sigma</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">sigma</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="Vp"><a class="viewcode-back" href="../source/base.html#base.Vp">[documentos]</a><span class="k">def</span> <span class="nf">Vp</span><span class="p">(</span><span class="n">density</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">young</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">poisson</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+       <span class="n">shear</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">deformation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retorna a velocidade da onda compressional (P) pelas propriedades dadas.</span>
+
+<span class="sd">    Para computacao, deve se entrar uma das seguintes combinacoes de</span>
+<span class="sd">    parametros:</span>
+<span class="sd">    * density, young, poisson;</span>
+<span class="sd">    * density, shear, deformation;</span>
+<span class="sd">    * distance, time</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        density (float): Densidade do material (rho).</span>
+<span class="sd">        young (float): Coeficiente de Young (E).</span>
+<span class="sd">        poisson (float): Coeficiente de poisson (sigma)</span>
+<span class="sd">        shear (float): Coeficiente compressional (mu)</span>
+<span class="sd">        deformation (float): Deformacao do material (k) (Bulk&#39;s)</span>
+<span class="sd">        distance (float): Distancia em metros (x)</span>
+<span class="sd">        time (float): tempo percorrido (t).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Velocidade da onda P.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">density</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">density</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">young</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">young</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">poisson</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">poisson</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">velocity_p_by_young</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="n">young</span><span class="p">,</span> <span class="n">poisson</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">shear</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">shear</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span>
+              <span class="n">deformation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">deformation</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">velocity_p_by_shear</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="n">shear</span><span class="p">,</span> <span class="n">deformation</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">distance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">time</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">velocity_p_by_distance</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;You should supply positives &#39;density, shear, deformation&#39; &quot;</span>
+                         <span class="s2">&quot;or &#39;density, young, poisson&#39; or &#39;distance,time&#39; where &quot;</span>
+                         <span class="s2">&quot;0 &lt; poisson &lt; .5&#39;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="velocity_s_by_shear"><a class="viewcode-back" href="../source/base.html#base.velocity_s_by_shear">[documentos]</a><span class="k">def</span> <span class="nf">velocity_s_by_shear</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">mu</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Retorna a velocidade da onda S (cisalhante) dados mu e rho.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        rho (float): Coeficiente de Cisalhamento</span>
+<span class="sd">        mu (float): Coeficiente de densidade.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Velocidade cisalhante</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mu</span><span class="o">/</span><span class="n">rho</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="velocity_s_by_young"><a class="viewcode-back" href="../source/base.html#base.velocity_s_by_young">[documentos]</a><span class="k">def</span> <span class="nf">velocity_s_by_young</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Retorna a velocidade da onda S dados sigma e rho.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        rho (float): Coeficiente de densidade (rho)</span>
+<span class="sd">        E (float): Young&#39;s soefficient</span>
+<span class="sd">        sigma (float): Coeficiente de Poisson (sigma)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Velocidade cisalhante</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">E</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">rho</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">sigma</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="Vs"><a class="viewcode-back" href="../source/base.html#base.Vs">[documentos]</a><span class="k">def</span> <span class="nf">Vs</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="n">shear</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">young</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">poisson</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns shear velocity based on physical coefficients.</span>
+
+<span class="sd">    You should supply one of the two parameter combinations:</span>
+
+<span class="sd">    * density and shear;</span>
+
+<span class="sd">    * density, Young and Poisson coefficient</span>
+
+<span class="sd">    This function verifies the values, therefore is slower, if you need faster</span>
+<span class="sd">    function, call directly:</span>
+
+<span class="sd">    * velocity_s_by_shear</span>
+
+<span class="sd">    * velocity_s_by_young</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        density (float): Density (non negative) ( :math:`\rho` ).</span>
+<span class="sd">        shear (float): Shear (non negative) ( :math:`\mu` ).</span>
+<span class="sd">        young (float): Young coefficient (E).</span>
+<span class="sd">        poisson (float): Poisson coefficient. :math:`0 &lt; \sigma &lt; 1/2` .</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Shear velocity</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">density</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Density must be a positive value&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">shear</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">shear</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">velocity_s_by_shear</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="n">shear</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">young</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>   <span class="ow">and</span> <span class="n">young</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span>
+          <span class="n">poisson</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">poisson</span> <span class="o">&lt;</span> <span class="o">.</span><span class="mi">5</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">velocity_s_by_young</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="n">young</span><span class="p">,</span> <span class="n">poisson</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;You should supply positives &#39;density and shear&#39;&quot;</span>
+                         <span class="s2">&quot;or &#39;density, young, poisson&#39;, where 0 &lt; poisson &lt; .5&#39;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="velocity_ratio_by_deformation"><a class="viewcode-back" href="../source/base.html#base.velocity_ratio_by_deformation">[documentos]</a><span class="k">def</span> <span class="nf">velocity_ratio_by_deformation</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">mu</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retorna a razao entre a velocidade P e S.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        deformation (float): Coeficiente de deformacao (de Bulk)</span>
+<span class="sd">        shear (float): Coeficiente de cisalhamento</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Razao da velocidade Vp/Vs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">k</span><span class="o">/</span><span class="n">mu</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">4</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="velocity_ratio_by_poisson"><a class="viewcode-back" href="../source/base.html#base.velocity_ratio_by_poisson">[documentos]</a><span class="k">def</span> <span class="nf">velocity_ratio_by_poisson</span><span class="p">(</span><span class="n">sigma</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retorna a razao entre a Vp e Vs</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        poisson (float): Coeficiente de poisson</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Razao da velocidade Vp/Vs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">sigma</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mf">0.5</span><span class="o">-</span><span class="n">sigma</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="velocity_ratio"><a class="viewcode-back" href="../source/base.html#base.velocity_ratio">[documentos]</a><span class="k">def</span> <span class="nf">velocity_ratio</span><span class="p">(</span><span class="n">deformation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shear</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">poisson</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns velocity ratio P/S</span>
+
+<span class="sd">    The function requires &quot;deformation and shear&quot;  OR poisson coefficients. If</span>
+<span class="sd">    all three are supplied Poisson is ignored.</span>
+
+<span class="sd">    This function is slower since it does verifications but safer.  If you</span>
+<span class="sd">    want to call without value verification use:</span>
+<span class="sd">    * velocity_ratio_by_deformation</span>
+<span class="sd">    * velocity_ratio_by_poisson</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        deformation (float): Deformation factor (k), must be positive.</span>
+<span class="sd">        shear (float): Shear factor (mu), must be positive.</span>
+<span class="sd">        poisson (float): Poisson coeficient (sigma),  0 &lt; sigma &lt; 1/2.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Velocity ratio P/S. Always a number bigger than 1.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">deformation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">deformation</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">shear</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">shear</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">velocity_ratio_by_deformation</span><span class="p">(</span><span class="n">deformation</span><span class="p">,</span> <span class="n">shear</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">poisson</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">poisson</span> <span class="o">&lt;</span> <span class="o">.</span><span class="mi">5</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">velocity_ratio_by_poisson</span><span class="p">(</span><span class="n">poisson</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;You should supply positives &#39;deformation and shear&#39;&quot;</span>
+                         <span class="s2">&quot; or a &#39;poisson&#39; coefficient in (0,1/2)&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="acoustic_impedance"><a class="viewcode-back" href="../source/base.html#base.acoustic_impedance">[documentos]</a><span class="k">def</span> <span class="nf">acoustic_impedance</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="n">velocity</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns acoustic impedance</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        density (float): Density (rho).</span>
+<span class="sd">        velocity (float): Wave velocity (V)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Acoustic impedance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">density</span><span class="o">*</span><span class="n">velocity</span></div>
+
+
+<div class="viewcode-block" id="reflection_coefficient"><a class="viewcode-back" href="../source/base.html#base.reflection_coefficient">[documentos]</a><span class="k">def</span> <span class="nf">reflection_coefficient</span><span class="p">(</span><span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the reflection coefficient.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        z1 (float): Acoustic impedance of upper layer.</span>
+<span class="sd">        z2 (float): Acoustic impedance of lower layer.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Reflection coefficient.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">z2</span> <span class="o">-</span> <span class="n">z1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">z2</span> <span class="o">+</span> <span class="n">z1</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Seismic</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navegação</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">CHANGELOG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/modules.html">Seismic</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Código do módulo</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Busca rápida</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Ir" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Igor Morgado.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

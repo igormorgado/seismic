@@ -1,0 +1,224 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt_BR">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>src package &#8212; documentação Seismic 1</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="src-package">
+<h1>src package<a class="headerlink" href="#src-package" title="Link permanente para este título">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link permanente para este título">¶</a></h2>
+</div>
+<div class="section" id="module-silva2015">
+<span id="silva2015-module"></span><h2>silva2015 module<a class="headerlink" href="#module-silva2015" title="Link permanente para este título">¶</a></h2>
+<dl class="function">
+<dt id="silva2015.frequencia">
+<code class="descclassname">silva2015.</code><code class="descname">frequencia</code><span class="sig-paren">(</span><em>t1</em>, <em>t0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silva2015.html#frequencia"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#silva2015.frequencia" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna a frequencia baseado no intervalo</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="silva2015.lambda_">
+<code class="descclassname">silva2015.</code><code class="descname">lambda_</code><span class="sig-paren">(</span><em>r1</em>, <em>r0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silva2015.html#lambda_"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#silva2015.lambda_" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna lambda o comprimento de onda.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="silva2015.periodo">
+<code class="descclassname">silva2015.</code><code class="descname">periodo</code><span class="sig-paren">(</span><em>t1</em>, <em>t0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silva2015.html#periodo"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#silva2015.periodo" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna o periodo do intervalo</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="silva2015.velocidade_onda">
+<code class="descclassname">silva2015.</code><code class="descname">velocidade_onda</code><span class="sig-paren">(</span><em>r1</em>, <em>t1</em>, <em>r0</em>, <em>t0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silva2015.html#velocidade_onda"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#silva2015.velocidade_onda" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna a velocidade da onda como a razao entre duas cristas de onda
+no instante 1 e 0.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="silva2015.velocidade_p">
+<code class="descclassname">silva2015.</code><code class="descname">velocidade_p</code><span class="sig-paren">(</span><em>x</em>, <em>t</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silva2015.html#velocidade_p"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#silva2015.velocidade_p" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna a velocidade da onda compressional</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="silva2015.velocidade_p2">
+<code class="descclassname">silva2015.</code><code class="descname">velocidade_p2</code><span class="sig-paren">(</span><em>k</em>, <em>mu</em>, <em>rho</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silva2015.html#velocidade_p2"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#silva2015.velocidade_p2" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna a velocidade da onda P (compressional) pelas propriedades da
+rocha.</p>
+<p>Parametro:
+k: float Modulo da deformacao volumetrica ou Modulo d ebulk
+mu: float Modulo de cisalhamento (mede deformacao sem mudanca de volume)
+rho: float densidade do material</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="silva2015.velocidade_p3">
+<code class="descclassname">silva2015.</code><code class="descname">velocidade_p3</code><span class="sig-paren">(</span><em>E</em>, <em>rho</em>, <em>sigma</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silva2015.html#velocidade_p3"><span class="viewcode-link">[código fonte]</span></a><a class="headerlink" href="#silva2015.velocidade_p3" title="Link permanente para esta definição">¶</a></dt>
+<dd><p>Retorna a velocidade da onda P (compressional) pelas propriedades da
+rocha.</p>
+<p>Parametro:
+E: float Modulo de Young proporcionalidade entre a tensao e a deformacao
+rho: float densidade do material
+sigma: float Coeficiente de Poisson razao da contracao transversal e</p>
+<blockquote>
+<div>extensao longitudinal</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="module-silva2015">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-silva2015" title="Link permanente para este título">¶</a></h2>
+<dl class="function">
+<dt>
+<code class="descclassname">silva2015.</code><code class="descname">frequencia</code><span class="sig-paren">(</span><em>t1</em>, <em>t0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silva2015.html#frequencia"><span class="viewcode-link">[código fonte]</span></a></dt>
+<dd><p>Retorna a frequencia baseado no intervalo</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descclassname">silva2015.</code><code class="descname">lambda_</code><span class="sig-paren">(</span><em>r1</em>, <em>r0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silva2015.html#lambda_"><span class="viewcode-link">[código fonte]</span></a></dt>
+<dd><p>Retorna lambda o comprimento de onda.</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descclassname">silva2015.</code><code class="descname">periodo</code><span class="sig-paren">(</span><em>t1</em>, <em>t0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silva2015.html#periodo"><span class="viewcode-link">[código fonte]</span></a></dt>
+<dd><p>Retorna o periodo do intervalo</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descclassname">silva2015.</code><code class="descname">velocidade_onda</code><span class="sig-paren">(</span><em>r1</em>, <em>t1</em>, <em>r0</em>, <em>t0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silva2015.html#velocidade_onda"><span class="viewcode-link">[código fonte]</span></a></dt>
+<dd><p>Retorna a velocidade da onda como a razao entre duas cristas de onda
+no instante 1 e 0.</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descclassname">silva2015.</code><code class="descname">velocidade_p</code><span class="sig-paren">(</span><em>x</em>, <em>t</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silva2015.html#velocidade_p"><span class="viewcode-link">[código fonte]</span></a></dt>
+<dd><p>Retorna a velocidade da onda compressional</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descclassname">silva2015.</code><code class="descname">velocidade_p2</code><span class="sig-paren">(</span><em>k</em>, <em>mu</em>, <em>rho</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silva2015.html#velocidade_p2"><span class="viewcode-link">[código fonte]</span></a></dt>
+<dd><p>Retorna a velocidade da onda P (compressional) pelas propriedades da
+rocha.</p>
+<p>Parametro:
+k: float Modulo da deformacao volumetrica ou Modulo d ebulk
+mu: float Modulo de cisalhamento (mede deformacao sem mudanca de volume)
+rho: float densidade do material</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descclassname">silva2015.</code><code class="descname">velocidade_p3</code><span class="sig-paren">(</span><em>E</em>, <em>rho</em>, <em>sigma</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/silva2015.html#velocidade_p3"><span class="viewcode-link">[código fonte]</span></a></dt>
+<dd><p>Retorna a velocidade da onda P (compressional) pelas propriedades da
+rocha.</p>
+<p>Parametro:
+E: float Modulo de Young proporcionalidade entre a tensao e a deformacao
+rho: float densidade do material
+sigma: float Coeficiente de Poisson razao da contracao transversal e</p>
+<blockquote>
+<div>extensao longitudinal</div></blockquote>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Seismic</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navegação</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">CHANGELOG</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Busca rápida</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Ir" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Igor Morgado.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/source/src.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

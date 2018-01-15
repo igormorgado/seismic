@@ -1,0 +1,226 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt_BR">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>wave &#8212; documentação Seismic 1</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Código fonte para wave</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">source</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implements the Finite difference method for wave equation simulation. It</span>
+<span class="sd">uses fourth order in space and second order in time.</span>
+
+<span class="sd">TODO: Boundary conditions **MUST** be added on differentiations, otherwise</span>
+<span class="sd">      it will collapse after N/2 iterations.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># pylint: disable=locally-disabled,no-value-for-parameter</span>
+
+
+<div class="viewcode-block" id="fpp_fourth_order_term"><a class="viewcode-back" href="../source/wave.html#wave.fpp_fourth_order_term">[documentos]</a><span class="k">def</span> <span class="nf">fpp_fourth_order_term</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the second derivative of fourth order term without the step</span>
+
+<span class="sd">    values must have (at least) 5 points equally spaced.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        values (nparray): Values of points in grid</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: List of fourth order derivatives</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+
+    <span class="n">fm2</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span> <span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">fm1</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">fc0</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">fp1</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">fp2</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span>  <span class="p">]</span>
+
+    <span class="c1"># Resorted to reduce the number of operations</span>
+    <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="n">fm2</span> <span class="o">+</span> <span class="mi">16</span><span class="o">*</span><span class="p">(</span><span class="n">fm1</span><span class="o">+</span><span class="n">fp1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">30</span><span class="o">*</span><span class="n">fc0</span> <span class="o">-</span> <span class="n">fp2</span><span class="p">)</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="fpp_fourth_order"><a class="viewcode-back" href="../source/wave.html#wave.fpp_fourth_order">[documentos]</a><span class="k">def</span> <span class="nf">fpp_fourth_order</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the second derivative of fourth order</span>
+
+<span class="sd">    values must have (at least) 5 points equally spaced.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        values (nparray): Values of points in grid</span>
+<span class="sd">        interval (float): Interval</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: List of fourth order derivatives</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mul</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">12</span> <span class="o">*</span> <span class="n">interval</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mul</span> <span class="o">*</span> <span class="n">fpp_fourth_order_term</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="fp_second_order_term"><a class="viewcode-back" href="../source/wave.html#wave.fp_second_order_term">[documentos]</a><span class="k">def</span> <span class="nf">fp_second_order_term</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the second derivative of second order without the step</span>
+
+<span class="sd">    values must have (at least) 3 points equally spaced.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        U (nparray): Value points in grid</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: List of second order derivatives</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+
+    <span class="c1"># Function slices</span>
+    <span class="n">fm1</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">fc0</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">fp1</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span>  <span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">fm1</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">fc0</span> <span class="o">+</span> <span class="n">fp1</span><span class="p">)</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="fp_second_order_explicit_terms"><a class="viewcode-back" href="../source/wave.html#wave.fp_second_order_explicit_terms">[documentos]</a><span class="k">def</span> <span class="nf">fp_second_order_explicit_terms</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the terms of explicit second order first derivative</span>
+
+<span class="sd">    values must have (at least) 3 points equally spaced.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        U (nparray): Values of points in grid</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: List of second order derivatives</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+
+    <span class="c1"># Function slices</span>
+    <span class="n">fm1</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">fc0</span> <span class="o">=</span> <span class="n">U</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">fm1</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">fc0</span><span class="p">)</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="fp_second_order"><a class="viewcode-back" href="../source/wave.html#wave.fp_second_order">[documentos]</a><span class="k">def</span> <span class="nf">fp_second_order</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the second derivative of second order</span>
+
+<span class="sd">    values must have (at least) 3 points equally spaced.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        values (nparray): Values of points in grid</span>
+<span class="sd">        interval (float): Interval</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: List of second order derivatives</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mul</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">interval</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="k">return</span> <span class="n">mul</span> <span class="o">*</span> <span class="n">fp_second_order_term</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="discrete_wave_step_3d"><a class="viewcode-back" href="../source/wave.html#wave.discrete_wave_step_3d">[documentos]</a><span class="k">def</span> <span class="nf">discrete_wave_step_3d</span><span class="p">(</span><span class="n">wave_field</span><span class="p">,</span> <span class="n">velocity_field</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Executes the discrete wave timestep forward in time&quot;&quot;&quot;</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">wave_field</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">velocity_field</span>
+
+    <span class="c1"># The fp_second_order_explicit_terms, should be preserved between</span>
+    <span class="c1"># iterations, probably this function must be an generator and keep 2 latest</span>
+    <span class="c1"># values.</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="mi">12</span> <span class="o">*</span> <span class="p">(</span>
+        <span class="p">((</span><span class="n">V</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">dt</span><span class="o">/</span><span class="n">dx</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">fpp_fourth_order_term</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">+</span>
+        <span class="p">((</span><span class="n">V</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">dt</span><span class="o">/</span><span class="n">dy</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">fpp_fourth_order_term</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span> <span class="o">+</span>
+        <span class="p">((</span><span class="n">V</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">dt</span><span class="o">/</span><span class="n">dz</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">fpp_fourth_order_term</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+        <span class="p">)</span> <span class="o">+</span> <span class="n">fp_second_order_explicit_terms</span><span class="p">(</span><span class="n">U</span><span class="p">)</span> <span class="o">+</span> <span class="n">source</span><span class="p">()</span></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Seismic</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navegação</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">README</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">CHANGELOG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/modules.html">Seismic</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Código do módulo</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Busca rápida</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Ir" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Igor Morgado.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
