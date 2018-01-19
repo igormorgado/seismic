@@ -165,14 +165,14 @@ class Ricker(object):
 
         import matplotlib.pyplot as plt
 
-        label = "Ricker {}Hz".format(self.cut_frequency)
+        label = "Ricker {}Hz - {} phase".format(self.cut_frequency, self.phase)
 
         lines = []
         lines.append(plt.plot(timestep, self.values(timestep, timeshift), label=label))
         lines.append(plt.plot(timestep, self.values(timestep, timeshift), 'ro', alpha=.5, ms=3))
 
         if show:
-            ax.legend()
+            plt.legend(loc='upper right')
             plt.ylabel("Amplitude")
             plt.xlabel("Time(s)")
             plt.show()
