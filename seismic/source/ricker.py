@@ -167,9 +167,9 @@ class Ricker(object):
 
         label = "Ricker {}Hz".format(self.cut_frequency)
 
-        fig, ax = plt.subplots()
-        ax.plot(timestep, self.values(timestep, timeshift), label=label)
-        ax.plot(timestep, self.values(timestep, timeshift), 'ro', alpha=.5, ms=3)
+        lines = []
+        lines.append(plt.plot(timestep, self.values(timestep, timeshift), label=label))
+        lines.append(plt.plot(timestep, self.values(timestep, timeshift), 'ro', alpha=.5, ms=3))
 
         if show:
             ax.legend()
@@ -178,4 +178,4 @@ class Ricker(object):
             plt.show()
             return 
 
-        return ax
+        return lines
