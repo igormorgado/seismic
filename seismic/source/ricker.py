@@ -176,6 +176,6 @@ class Ricker(object):
             plt.ylabel("Amplitude")
             plt.xlabel("Time(s)")
             plt.show()
-            return ax
+            return 
 
         return ax
