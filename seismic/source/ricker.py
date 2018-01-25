@@ -97,7 +97,6 @@ class Ricker(object):
     def central_frequency(self):
         """Returns the 'central' frequency of Ricker source wavelet also know
         as dominant frequency"""
-        #return self._cut_frequency/(3 * np.sqrt(np.pi))
         return self._cut_frequency * (np.sqrt(6)/np.pi)
 
 
@@ -108,7 +107,6 @@ class Ricker(object):
         Params:
             value(float): Cut frequency
         """
-        #self._cut_frequency = 3 * np.sqrt(np.pi) * value
         # pragma pylint: disable=attribute-defined-outside-init
         self._cut_frequency = (value * np.pi)/np.sqrt(6)
 
@@ -116,7 +114,6 @@ class Ricker(object):
     @property
     def period(self):
         """Returns the period (+/-) of gaussian function of given cut frequency."""
-        #return 1.5 * (np.sqrt(6)/(np.pi * self.central_frequency))
         return (2 * np.sqrt(np.pi))/self._cut_frequency
 
 

@@ -65,7 +65,8 @@ def main():
         #Apply the propagation inside the Pressure Field
         P[2][2:-2, 2:-2] = (
             wave.discrete_wave_step_2d(P[1], V, dx, dz, dt) +
-            wave.discrete_time_step_2d(P)[2:-2, 2:-2])
+            wave.discrete_time_step_2d(P)[2:-2, 2:-2]
+        )
 
         #Apply the propagation on borders
         wave.non_reflexive_border_2d(P, V, dx, dz, dt)
